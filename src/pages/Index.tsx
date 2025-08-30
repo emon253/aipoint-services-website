@@ -25,10 +25,10 @@ const Index = () => {
       <Navbar onContactClick={handleContactClick} />
       <Hero onContactClick={handleContactClick} />
       <About />
-      <Services />
-      <Industries />
-      <Portfolio />
-      <Partners />
+      {/*<Services />*/}
+      {/*<Industries />*/}
+      {/*<Portfolio />*/}
+      {/*<Partners />*/}
       <Footer />
       <ContactModal 
         isOpen={isContactModalOpen} 

@@ -1,99 +1,176 @@
-import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Menu, X } from 'lucide-react';
+import { useEffect, useRef, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Menu, X } from "lucide-react";
+import clsx from "clsx";
 
 interface NavbarProps {
   onContactClick: () => void;
 }
 
+const SECTIONS = ["home", "about", "services", "industries", "portfolio"];
+
 const Navbar = ({ onContactClick }: NavbarProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [active, setActive] = useState<string>("home");
+  const menuRef = useRef<HTMLDivElement>(null);
 
-  const navItems = [
-    { name: 'Home', href: '#home' },
-    { name: 'About', href: '#about' },
-    { name: 'Services', href: '#services' },
-    { name: 'Industries', href: '#industries' },
-    { name: 'Portfolio', href: '#portfolio' },
-  ];
+  // Scroll style + scrollspy
+  useEffect(() => {
+    const onScroll = () => {
+      setScrolled(window.scrollY > 6);
 
-  const scrollToSection = (href: string) => {
-    const element = document.querySelector(href);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
+      // determine active section
+      let current = "home";
+      for (const id of SECTIONS) {
+        const el = document.getElementById(id);
+        if (!el) continue;
+        const rect = el.getBoundingClientRect();
+        // top reaches within 40% of viewport height
+        if (rect.top <= window.innerHeight * 0.4) current = id;
+      }
+      setActive(current);
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // Close mobile on ESC and click outside
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setIsOpen(false);
+    const onClick = (e: MouseEvent) => {
+      if (!menuRef.current) return;
+      if (isOpen && !menuRef.current.contains(e.target as Node)) setIsOpen(false);
+    };
+    document.addEventListener("keydown", onKey);
+    document.addEventListener("mousedown", onClick);
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.removeEventListener("mousedown", onClick);
+    };
+  }, [isOpen]);
+
+  const scrollTo = (hash: string) => {
+    const el = document.querySelector(hash);
+    if (!el) return;
+    // account for fixed navbar height
+    const y = (el as HTMLElement).getBoundingClientRect().top + window.scrollY - 72;
+    window.scrollTo({ top: y, behavior: "smooth" });
     setIsOpen(false);
   };
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-black/95 backdrop-blur-xl border-b border-white/10 shadow-xl">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <div className="flex-shrink-0">
-            <h1 className="text-2xl font-bold text-white drop-shadow-lg">AI Point</h1>
-          </div>
+      <nav
+          className={clsx(
+              "fixed inset-x-0 top-0 z-50 transition-all duration-300",
+              scrolled
+                  ? "bg-black/70 backdrop-blur-md border-b border-white/10 shadow-[0_1px_20px_rgba(0,0,0,0.25)]"
+                  : "bg-transparent"
+          )}
+          aria-label="Primary"
+      >
+        {/* skip link */}
+        <a
+            href="#home"
+            className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-2 bg-white text-black px-3 py-1 rounded"
+        >
+          Skip to content
+        </a>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:block">
-            <div className="ml-10 flex items-baseline space-x-4">
-              {navItems.map((item) => (
-                <button
-                  key={item.name}
-                  onClick={() => scrollToSection(item.href)}
-                  className="text-white/90 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors"
-                >
-                  {item.name}
-                </button>
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="flex h-16 items-center justify-between">
+            {/* Brand */}
+            <button
+                onClick={() => scrollTo("#home")}
+                className="group flex items-center gap-2"
+                aria-label="AI Point - go to home"
+            >
+              <span className="h-6 w-6 rounded-md bg-gradient-to-br from-indigo-400 via-violet-400 to-fuchsia-400 blur-[0.2px] shadow-inner" />
+              <span className="text-xl font-bold tracking-tight text-white">
+              AI <span className="text-white/70 group-hover:text-white transition-colors">Point</span>
+            </span>
+            </button>
+
+            {/* Desktop nav */}
+            <div className="hidden md:flex items-center gap-6">
+              {SECTIONS.map((id) => (
+                  <button
+                      key={id}
+                      onClick={() => scrollTo(`#${id}`)}
+                      className={clsx(
+                          "relative px-1.5 py-2 text-sm font-medium transition-colors",
+                          "text-white/80 hover:text-white",
+                          active === id && "text-white"
+                      )}
+                  >
+                    {id[0].toUpperCase() + id.slice(1)}
+                    {/* active underline */}
+                    <span
+                        className={clsx(
+                            "absolute left-0 -bottom-0.5 h-0.5 w-full scale-x-0 bg-gradient-to-r from-indigo-400 to-fuchsia-400 transition-transform origin-left",
+                            active === id && "scale-x-100"
+                        )}
+                    />
+                  </button>
               ))}
             </div>
-          </div>
 
-          {/* CTA Button */}
-          <div className="hidden md:block">
-            <Button 
-              onClick={onContactClick}
-              className="bg-white text-black hover:bg-gray-100 font-semibold px-6 py-2 rounded-lg transition-all duration-300 hover:shadow-xl shadow-lg"
-            >
-              Get Free Consultation
-            </Button>
-          </div>
+            {/* CTA */}
+            <div className="hidden md:block">
+              <Button
+                  onClick={onContactClick}
+                  className="font-semibold shadow-lg hover:shadow-xl transition-all bg-white text-black hover:bg-gray-100"
+              >
+                Get Free Consultation
+              </Button>
+            </div>
 
-          {/* Mobile menu button */}
-          <div className="md:hidden">
+            {/* Mobile toggle */}
             <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="inline-flex items-center justify-center p-2 rounded-md text-white hover:text-gray-200 focus:outline-none"
+                onClick={() => setIsOpen((s) => !s)}
+                aria-expanded={isOpen}
+                aria-controls="mobile-menu"
+                aria-label="Toggle menu"
+                className="md:hidden inline-flex items-center justify-center p-2 text-white"
             >
               {isOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
           </div>
-        </div>
 
-        {/* Mobile Navigation */}
-        {isOpen && (
-          <div className="md:hidden">
-            <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-black/95 backdrop-blur-md rounded-lg mt-2 border border-white/10">
-              {navItems.map((item) => (
-                <button
-                  key={item.name}
-                  onClick={() => scrollToSection(item.href)}
-                  className="text-white/90 hover:text-white hover:bg-white/10 block px-3 py-2 rounded-md text-base font-medium w-full text-left transition-colors"
-                >
-                  {item.name}
-                </button>
+          {/* Mobile menu */}
+          <div
+              id="mobile-menu"
+              ref={menuRef}
+              className={clsx(
+                  "md:hidden transition-[max-height,opacity] duration-300 overflow-hidden",
+                  isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+              )}
+          >
+            <div className="mt-2 rounded-lg border border-white/10 bg-black/80 backdrop-blur-md p-2">
+              {SECTIONS.map((id) => (
+                  <button
+                      key={id}
+                      onClick={() => scrollTo(`#${id}`)}
+                      className={clsx(
+                          "w-full rounded-md px-3 py-2 text-left text-base font-medium transition",
+                          "text-white/90 hover:bg-white/10",
+                          active === id && "text-white"
+                      )}
+                  >
+                    {id[0].toUpperCase() + id.slice(1)}
+                  </button>
               ))}
-              <Button 
-                onClick={onContactClick}
-                className="w-full mt-4 bg-white text-black hover:bg-gray-100 font-semibold py-2 rounded-lg transition-all duration-300"
+              <Button
+                  onClick={onContactClick}
+                  className="mt-2 w-full bg-white text-black hover:bg-gray-100 font-semibold"
               >
                 Get Free Consultation
               </Button>
             </div>
           </div>
-        )}
-      </div>
-    </nav>
+        </div>
+      </nav>
   );
 };
 

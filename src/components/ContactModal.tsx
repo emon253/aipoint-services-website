@@ -62,7 +62,7 @@ const ContactModal = ({ isOpen, onClose }: ContactModalProps) => {
       icon: Phone,
       label: 'Phone',
       value: '+1 (555) 123-4567',
-      href: 'tel:+15551234567'
+      href: 'tel:+889-2351233'
     },
     {
       icon: Mail,
@@ -73,7 +73,7 @@ const ContactModal = ({ isOpen, onClose }: ContactModalProps) => {
     {
       icon: MapPin,
       label: 'Office',
-      value: 'San Francisco, CA',
+      value: 'Dhaka, Bangladesh',
       href: '#'
     }
   ];
@@ -88,14 +88,14 @@ const ContactModal = ({ isOpen, onClose }: ContactModalProps) => {
           <p className="text-muted-foreground">
             Ready to transform your business? Let's discuss your project and explore how we can help.
           </p>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={onClose}
-            className="absolute right-0 top-0 rounded-full p-2"
-          >
-            <X className="h-4 w-4" />
-          </Button>
+          {/*<Button*/}
+          {/*  variant="ghost"*/}
+          {/*  size="sm"*/}
+          {/*  onClick={onClose}*/}
+          {/*  className="absolute right-0 top-0 rounded-full p-2"*/}
+          {/*>*/}
+          {/*  <X className="h-4 w-4" />*/}
+          {/*</Button>*/}
         </DialogHeader>
 
         <div className="grid lg:grid-cols-2 gap-8">

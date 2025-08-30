@@ -42,7 +42,48 @@ const Portfolio = () => {
       ],
       image: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&h=400&fit=crop&auto=format',
       featured: false
+    },
+    {
+      title: 'EdTech Learning Platform',
+      category: 'Education',
+      description: 'AI-driven learning management system with adaptive course recommendations',
+      technologies: ['Next.js', 'Spring Boot', 'PostgreSQL', 'Redis'],
+      stats: [
+        { label: 'Students', value: '50K+' },
+        { label: 'Courses', value: '1.2K' },
+        { label: 'Engagement', value: '85%' }
+      ],
+      image: 'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=600&h=400&fit=crop&auto=format',
+      featured: false
+    },
+    {
+      title: 'Logistics Optimization System',
+      category: 'Logistics',
+      description: 'AI-powered route optimization and fleet tracking reducing delivery costs by 25%',
+      technologies: ['Angular', 'Node.js', 'GraphQL', 'AWS'],
+      stats: [
+        { label: 'Deliveries/Month', value: '200K+' },
+        { label: 'Fleet Size', value: '3K+' },
+        { label: 'Cost Savings', value: '25%' }
+      ],
+      image: 'https://images.unsplash.com/photo-1581091870622-8e07eca6f7d7?crop=entropy&w=600&h=400&fit=crop&auto=format',
+      featured: false
+    },
+    {
+      title: 'Real Estate Analytics Dashboard',
+      category: 'Real Estate',
+      description: 'Data visualization dashboard for property insights and AI-driven pricing predictions',
+      technologies: ['React', 'Flask', 'Pandas', 'AWS Lambda'],
+      stats: [
+        { label: 'Properties Analyzed', value: '75K+' },
+        { label: 'Markets Covered', value: '12' },
+        { label: 'Prediction Accuracy', value: '92%' }
+      ],
+      image: 'https://images.unsplash.com/photo-YWRGlZ1LQQ8?crop=entropy&w=600&h=400&fit=crop&auto=format',
+      featured: false
     }
+
+
   ];
 
   const achievements = [
