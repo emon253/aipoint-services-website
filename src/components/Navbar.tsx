@@ -26,7 +26,7 @@ const Navbar = ({ onContactClick }: NavbarProps) => {
   };
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-xl border-b border-primary/20 shadow-lg shadow-primary/5">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
@@ -53,7 +53,7 @@ const Navbar = ({ onContactClick }: NavbarProps) => {
           <div className="hidden md:block">
             <Button 
               onClick={onContactClick}
-              className="bg-primary hover:bg-primary-dark text-primary-foreground font-semibold px-6 py-2 rounded-lg transition-all duration-300 hover:shadow-lg"
+              className="bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white font-semibold px-6 py-2 rounded-lg transition-all duration-300 hover:shadow-xl hover:shadow-primary/25 glow-on-hover"
             >
               Get Free Consultation
             </Button>
@@ -85,7 +85,7 @@ const Navbar = ({ onContactClick }: NavbarProps) => {
               ))}
               <Button 
                 onClick={onContactClick}
-                className="w-full mt-4 bg-primary hover:bg-primary-dark text-primary-foreground font-semibold py-2 rounded-lg"
+                className="w-full mt-4 bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white font-semibold py-2 rounded-lg transition-all duration-300"
               >
                 Get Free Consultation
               </Button>
