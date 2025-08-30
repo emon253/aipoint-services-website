@@ -14,32 +14,32 @@ const Hero = ({ onContactClick }: HeroProps) => {
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: `url(${heroBg})` }}
       />
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/90 via-secondary/80 to-primary/90" />
+      <div className="absolute inset-0 bg-gradient-to-br from-black/85 via-gray-900/90 to-black/85" />
       
       {/* Floating Elements */}
       <div className="absolute top-20 left-10 animate-float">
-        <Sparkles className="text-cyan-300/60 w-8 h-8 drop-shadow-lg" />
+        <Sparkles className="text-white/40 w-8 h-8 drop-shadow-lg" />
       </div>
       <div className="absolute top-32 right-20 animate-float" style={{ animationDelay: '2s' }}>
-        <Zap className="text-purple-300/60 w-6 h-6 drop-shadow-lg" />
+        <Zap className="text-gray-300/50 w-6 h-6 drop-shadow-lg" />
       </div>
       <div className="absolute bottom-32 left-20 animate-float" style={{ animationDelay: '4s' }}>
-        <Target className="text-blue-300/60 w-10 h-10 drop-shadow-lg" />
+        <Target className="text-white/30 w-10 h-10 drop-shadow-lg" />
       </div>
 
       {/* Content */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <div className="animate-fade-up">
           {/* Badge */}
-          <div className="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-primary/20 to-secondary/20 backdrop-blur-md border border-primary/30 text-white mb-8 shadow-xl shadow-primary/10">
-            <Sparkles className="w-4 h-4 mr-2 text-cyan-300" />
+          <div className="inline-flex items-center px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white mb-8 shadow-xl">
+            <Sparkles className="w-4 h-4 mr-2 text-white" />
             <span className="text-sm font-medium">AI-Powered Solutions</span>
           </div>
 
           {/* Main Heading */}
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
             Empowering Businesses with{' '}
-            <span className="text-gradient bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
               AI-driven Solutions
             </span>
           </h1>
@@ -55,7 +55,7 @@ const Hero = ({ onContactClick }: HeroProps) => {
             <Button 
               onClick={onContactClick}
               size="lg"
-              className="bg-gradient-to-r from-white to-gray-50 text-primary hover:from-white/95 hover:to-gray-50/95 font-semibold px-8 py-4 rounded-lg transition-all duration-300 hover:shadow-2xl glow-on-hover group shadow-xl"
+              className="bg-white text-black hover:bg-gray-100 font-semibold px-8 py-4 rounded-lg transition-all duration-300 hover:shadow-2xl group shadow-xl"
             >
               Get Free Consultation
               <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -63,7 +63,7 @@ const Hero = ({ onContactClick }: HeroProps) => {
             <Button 
               variant="outline"
               size="lg"
-              className="border-primary/50 text-white hover:bg-gradient-to-r hover:from-primary/20 hover:to-secondary/20 backdrop-blur-md px-8 py-4 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-primary/20"
+              className="border-white/50 text-white hover:bg-white/10 backdrop-blur-md px-8 py-4 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl"
             >
               View Our Work
             </Button>

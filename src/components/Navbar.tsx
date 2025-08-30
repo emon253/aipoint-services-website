@@ -26,7 +26,7 @@ const Navbar = ({ onContactClick }: NavbarProps) => {
   };
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-primary/95 to-secondary/95 backdrop-blur-xl border-b border-white/20 shadow-xl shadow-primary/20">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-black/95 backdrop-blur-xl border-b border-white/10 shadow-xl">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
@@ -53,7 +53,7 @@ const Navbar = ({ onContactClick }: NavbarProps) => {
           <div className="hidden md:block">
             <Button 
               onClick={onContactClick}
-              className="bg-white text-primary hover:bg-gray-100 font-semibold px-6 py-2 rounded-lg transition-all duration-300 hover:shadow-xl shadow-lg"
+              className="bg-white text-black hover:bg-gray-100 font-semibold px-6 py-2 rounded-lg transition-all duration-300 hover:shadow-xl shadow-lg"
             >
               Get Free Consultation
             </Button>
@@ -73,7 +73,7 @@ const Navbar = ({ onContactClick }: NavbarProps) => {
         {/* Mobile Navigation */}
         {isOpen && (
           <div className="md:hidden">
-            <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-primary/95 backdrop-blur-md rounded-lg mt-2 border border-white/20">
+            <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-black/95 backdrop-blur-md rounded-lg mt-2 border border-white/10">
               {navItems.map((item) => (
                 <button
                   key={item.name}
@@ -85,7 +85,7 @@ const Navbar = ({ onContactClick }: NavbarProps) => {
               ))}
               <Button 
                 onClick={onContactClick}
-                className="w-full mt-4 bg-white text-primary hover:bg-gray-100 font-semibold py-2 rounded-lg transition-all duration-300"
+                className="w-full mt-4 bg-white text-black hover:bg-gray-100 font-semibold py-2 rounded-lg transition-all duration-300"
               >
                 Get Free Consultation
               </Button>
