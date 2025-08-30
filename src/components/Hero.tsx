@@ -14,7 +14,7 @@ const Hero = ({ onContactClick }: HeroProps) => {
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: `url(${heroBg})` }}
       />
-      <div className="absolute inset-0 hero-gradient opacity-90" />
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/90 via-secondary/80 to-primary/90" />
       
       {/* Floating Elements */}
       <div className="absolute top-20 left-10 animate-float">
