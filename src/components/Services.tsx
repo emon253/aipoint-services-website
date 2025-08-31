@@ -1,17 +1,19 @@
 import { Code, Megaphone, Brain, Database, Smartphone, Cloud, BarChart, Shield } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { motion } from "framer-motion";
+import type { Variants } from "framer-motion";
 
-const fadeUp = {
+/** TS-safe variant factory */
+const fadeUp = (delay = 0): Variants => ({
   hidden: { opacity: 0, y: 24 },
-  show: (i = 0) => ({
+  show: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.5, ease: "easeOut", delay: 0.08 * i },
-  }),
-};
+    transition: { duration: 0.5, ease: "easeOut", delay },
+  },
+});
 
-const stagger = {
+const stagger: Variants = {
   hidden: {},
   show: { transition: { staggerChildren: 0.12 } },
 };
@@ -53,7 +55,7 @@ const Services = () => {
   ];
 
   return (
-      <section id="services" className="py-20 bg-background scroll-mt-24">
+      <section id="services" className="pt-10 bg-background scroll-mt-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           {/* Header */}
           <motion.div
@@ -63,10 +65,10 @@ const Services = () => {
               variants={stagger}
               className="text-center mb-16"
           >
-            <motion.h2 variants={fadeUp} className="text-4xl md:text-5xl font-bold text-foreground mb-4">
+            <motion.h2 variants={fadeUp(0)} className="text-4xl md:text-5xl font-bold text-foreground mb-4">
               Our <span className="text-gradient">Services</span>
             </motion.h2>
-            <motion.p variants={fadeUp} className="text-xl text-muted-foreground max-w-3xl mx-auto">
+            <motion.p variants={fadeUp(0.08)} className="text-xl text-muted-foreground max-w-3xl mx-auto">
               Comprehensive technology solutions designed to propel your business into the future
             </motion.p>
           </motion.div>
@@ -84,8 +86,7 @@ const Services = () => {
               return (
                   <motion.div
                       key={service.title}
-                      custom={i}
-                      variants={fadeUp}
+                      variants={fadeUp(i * 0.08)}
                       whileHover={{ y: -6 }}
                       transition={{ type: "spring", stiffness: 300, damping: 24 }}
                       className="relative"
@@ -103,9 +104,7 @@ const Services = () => {
                         >
                           <Icon className="h-10 w-10 text-white drop-shadow" />
                         </div>
-                        <CardTitle className="text-2xl font-bold text-foreground">
-                          {service.title}
-                        </CardTitle>
+                        <CardTitle className="text-2xl font-bold text-foreground">{service.title}</CardTitle>
                       </CardHeader>
                       <CardContent className="px-8 pb-8 text-center">
                         <p className="mb-6 leading-relaxed text-muted-foreground">{service.description}</p>
@@ -121,8 +120,7 @@ const Services = () => {
                           {service.features.map((f, idx) => (
                               <motion.li
                                   key={f}
-                                  variants={fadeUp}
-                                  custom={idx}
+                                  variants={fadeUp(idx * 0.06)}
                                   className="mx-auto flex max-w-xs items-center justify-center text-sm text-foreground/90"
                               >
                                 <span className="mr-3 inline-block h-2 w-2 rounded-full bg-primary" />
@@ -145,14 +143,14 @@ const Services = () => {
               variants={stagger}
               className="mb-20"
           >
-            <motion.h3 variants={fadeUp} className="text-3xl font-bold text-center text-foreground mb-12">
+            <motion.h3 variants={fadeUp(0)} className="text-3xl font-bold text-center text-foreground mb-12">
               Additional Expertise
             </motion.h3>
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-5">
               {additionalServices.map((s, i) => {
                 const Icon = s.icon;
                 return (
-                    <motion.div key={s.title} custom={i} variants={fadeUp} whileHover={{ y: -4 }}>
+                    <motion.div key={s.title} variants={fadeUp(i * 0.08)} whileHover={{ y: -4 }}>
                       <Card className="group text-center border-white/10 bg-white/5 backdrop-blur">
                         <CardContent className="p-6">
                           <div className="mx-auto mb-4 grid h-12 w-12 place-items-center rounded-full bg-primary/10 transition-colors group-hover:bg-primary/20">
@@ -170,12 +168,11 @@ const Services = () => {
 
           {/* Process */}
           <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={stagger} className="mt-10">
-            <motion.h3 variants={fadeUp} className="text-3xl font-bold text-center text-foreground mb-12">
+            <motion.h3 variants={fadeUp(0)} className="text-3xl font-bold text-center text-foreground mb-12">
               Our Development Process
             </motion.h3>
 
             <div className="relative">
-              {/* animated line */}
               <div className="pointer-events-none absolute left-1/2 top-10 hidden h-1 w-full -translate-x-1/2 bg-gradient-to-r from-transparent via-white/10 to-transparent md:block" />
               <div className="grid gap-8 md:grid-cols-4">
                 {[
@@ -184,12 +181,7 @@ const Services = () => {
                   { step: "03", title: "Development", description: "Building your solution with agile methodologies" },
                   { step: "04", title: "Launch", description: "Deploying and supporting your finished product" },
                 ].map((p, i) => (
-                    <motion.div
-                        key={p.step}
-                        custom={i}
-                        variants={fadeUp}
-                        className="text-center group relative"
-                    >
+                    <motion.div key={p.step} variants={fadeUp(i * 0.08)} className="text-center group relative">
                       <div className="mx-auto mb-4 grid h-16 w-16 place-items-center rounded-full bg-primary text-primary-foreground text-xl font-bold shadow-lg ring-1 ring-white/20 transition-transform group-hover:scale-110">
                         {p.step}
                       </div>

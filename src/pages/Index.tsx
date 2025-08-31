@@ -26,7 +26,7 @@ const Index = () => {
       <Hero onContactClick={handleContactClick} />
       <About />
       <Services />
-      {/*<Industries />*/}
+      <Industries />
       {/*<Portfolio />*/}
       {/*<Partners />*/}
       <Footer />

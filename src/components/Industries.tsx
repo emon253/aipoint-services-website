@@ -16,28 +16,28 @@ const Industries = () => {
       icon: Banknote,
       title: 'Finance',
       description: 'Secure fintech solutions, trading platforms, and blockchain applications',
-      projects: '15+ Projects',
+      projects: '5+ Projects',
       color: 'from-emerald-500 to-teal-500'
     },
     {
       icon: Heart,
       title: 'Healthcare',
       description: 'HIPAA-compliant systems, telemedicine platforms, and AI diagnostics',
-      projects: '12+ Projects',
+      projects: '4+ Projects',
       color: 'from-red-500 to-pink-500'
     },
     {
       icon: ShoppingCart,
       title: 'E-commerce',
-      description: 'Custom e-commerce platforms, inventory management, and AI recommendations',
-      projects: '20+ Projects',
+      description: 'E-commerce platforms, inventory management, and AI recommendations',
+      projects: '10+ Projects',
       color: 'from-orange-500 to-amber-500'
     },
     {
       icon: GraduationCap,
       title: 'Education',
       description: 'Learning management systems, online courses, and educational AI tools',
-      projects: '8+ Projects',
+      projects: '5+ Projects',
       color: 'from-blue-500 to-indigo-500'
     },
     {
@@ -65,13 +65,13 @@ const Industries = () => {
       icon: Truck,
       title: 'Logistics',
       description: 'Fleet management, route optimization, and warehouse automation',
-      projects: '6+ Projects',
+      projects: '2+ Projects',
       color: 'from-green-600 to-emerald-600'
     }
   ];
 
   return (
-    <section id="industries" className="py-20 bg-muted/30">
+    <section id="industries" className="py-10 bg-muted/30">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center mb-16">

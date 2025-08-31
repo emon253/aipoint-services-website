@@ -1,18 +1,23 @@
 import { Target, Eye, Heart, Award, Users, Lightbulb } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { motion, useInView, useMotionValue, useSpring, useTransform } from "framer-motion";
+import type { Variants } from "framer-motion";
 import { useEffect, useRef } from "react";
 
-const fadeUp = {
+/** Variant factory: returns plain Variants (TS-safe) */
+const fadeUp = (delay = 0): Variants => ({
   hidden: { opacity: 0, y: 20 },
-  show: (i = 0) => ({
+  show: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.5, ease: "easeOut", delay: i * 0.08 },
-  }),
-};
+    transition: { duration: 0.5, ease: "easeOut", delay },
+  },
+});
 
-const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.12 } } };
+const stagger: Variants = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.12 } },
+};
 
 // Count-up number when visible
 function AnimatedNumber({ to = 0, duration = 1.2 }: { to: number; duration?: number }) {
@@ -25,8 +30,16 @@ function AnimatedNumber({ to = 0, duration = 1.2 }: { to: number; duration?: num
   const rounded = useTransform(spring, (v) => Math.floor(v).toLocaleString());
 
   useEffect(() => {
-    if (inView) mv.set(to);
-  }, [inView, mv, to]);
+    if (inView) {
+      const start = performance.now();
+      const tick = (t: number) => {
+        const p = Math.min(1, (t - start) / (duration * 1000));
+        mv.set(p * to);
+        if (p < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    }
+  }, [inView, to, duration, mv]);
 
   useEffect(() => {
     const unsub = rounded.on("change", (v) => {
@@ -37,8 +50,7 @@ function AnimatedNumber({ to = 0, duration = 1.2 }: { to: number; duration?: num
 
   return (
       <span ref={inViewRef as any}>
-      <span ref={ref}>0</span>
-      +
+      <span ref={ref}>0</span>+
     </span>
   );
 }
@@ -75,8 +87,7 @@ const About = () => {
   ];
 
   return (
-      <section id="about" className="relative py-20 bg-muted/30 scroll-mt-24">
-        {/* subtle gradient mesh */}
+      <section id="about" className="relative pt-10 bg-muted/30 scroll-mt-24">
         <div
             aria-hidden
             className="pointer-events-none absolute inset-0 -z-10 [mask-image:radial-gradient(70%_70%_at_50%_30%,black,transparent)]"
@@ -93,10 +104,10 @@ const About = () => {
               variants={stagger}
               className="text-center mb-16"
           >
-            <motion.h2 variants={fadeUp} className="text-4xl md:text-5xl font-bold text-foreground mb-4">
+            <motion.h2 variants={fadeUp(0)} className="text-4xl md:text-5xl font-bold text-foreground mb-4">
               About <span className="text-gradient">AI Point</span>
             </motion.h2>
-            <motion.p variants={fadeUp} className="text-xl text-muted-foreground max-w-3xl mx-auto">
+            <motion.p variants={fadeUp(0.08)} className="text-xl text-muted-foreground max-w-3xl mx-auto">
               Leading the digital transformation revolution with innovative AI solutions, expert software development,
               and strategic digital marketing.
             </motion.p>
@@ -113,13 +124,13 @@ const About = () => {
             {values.map((v, i) => {
               const Icon = v.icon;
               return (
-                  <motion.div key={v.title} custom={i} variants={fadeUp} whileHover={{ y: -6 }}>
+                  <motion.div key={v.title} variants={fadeUp(i * 0.08)} whileHover={{ y: -6 }}>
                     <div className="relative">
-                      {/* gradient border glow */}
                       <div className="absolute -inset-px rounded-2xl bg-gradient-to-tr from-white/10 to-white/5 opacity-60 blur-sm" />
                       <Card className="relative group overflow-hidden rounded-2xl border-white/10 bg-white/5 backdrop-blur">
-                        {/* card aura */}
-                        <div className={`pointer-events-none absolute -top-16 -right-16 h-48 w-48 rounded-full bg-gradient-to-tr ${v.color} blur-2xl opacity-20`} />
+                        <div
+                            className={`pointer-events-none absolute -top-16 -right-16 h-48 w-48 rounded-full bg-gradient-to-tr ${v.color} blur-2xl opacity-20`}
+                        />
                         <CardContent className="p-8 text-center">
                           <div className="inline-grid place-items-center w-16 h-16 rounded-full bg-primary/10 mb-6 group-hover:bg-primary/15 transition-colors">
                             <Icon className="w-8 h-8 text-primary" />
@@ -136,7 +147,6 @@ const About = () => {
 
           {/* Overview + Achievements */}
           <div className="grid lg:grid-cols-2 gap-12 items-center mb-20">
-            {/* Overview copy */}
             <motion.div
                 initial="hidden"
                 whileInView="show"
@@ -144,24 +154,23 @@ const About = () => {
                 variants={stagger}
                 className="space-y-4"
             >
-              <motion.h3 variants={fadeUp} className="text-3xl font-bold text-foreground">
+              <motion.h3 variants={fadeUp(0)} className="text-3xl font-bold text-foreground">
                 Transforming Ideas into Digital Reality
               </motion.h3>
-              <motion.p variants={fadeUp} className="text-muted-foreground">
+              <motion.p variants={fadeUp(0.06)} className="text-muted-foreground">
                 Founded with a vision to bridge the gap between cutting-edge technology and practical business solutions,
                 AI Point has emerged as a trusted partner for companies seeking digital transformation.
               </motion.p>
-              <motion.p variants={fadeUp} className="text-muted-foreground">
+              <motion.p variants={fadeUp(0.12)} className="text-muted-foreground">
                 Our team of expert developers, AI specialists, and digital marketing professionals work collaboratively
                 to deliver solutions that not only meet current needs but anticipate future challenges.
               </motion.p>
-              <motion.p variants={fadeUp} className="text-muted-foreground">
+              <motion.p variants={fadeUp(0.18)} className="text-muted-foreground">
                 From Fortune 500 companies to innovative startups, we help businesses harness the power of AI and modern
                 technology to achieve measurable growth.
               </motion.p>
             </motion.div>
 
-            {/* Achievements cards with count-up */}
             <motion.div
                 initial="hidden"
                 whileInView="show"
@@ -172,7 +181,7 @@ const About = () => {
               {achievements.map((a, i) => {
                 const Icon = a.icon;
                 return (
-                    <motion.div key={a.label} custom={i} variants={fadeUp} whileHover={{ y: -4 }}>
+                    <motion.div key={a.label} variants={fadeUp(i * 0.08)} whileHover={{ y: -4 }}>
                       <Card className="text-center border-white/10 bg-white/5 backdrop-blur">
                         <CardContent className="p-6">
                           <div className="mx-auto mb-4 grid h-12 w-12 place-items-center rounded-full bg-primary/10">
@@ -192,7 +201,7 @@ const About = () => {
 
           {/* Why Choose */}
           <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={stagger} className="text-center">
-            <motion.h3 variants={fadeUp} className="text-3xl font-bold text-foreground mb-8">
+            <motion.h3 variants={fadeUp(0)} className="text-3xl font-bold text-foreground mb-8">
               Why Choose AI Point?
             </motion.h3>
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -202,7 +211,7 @@ const About = () => {
                 "Proven Track Record",
                 "24/7 Support & Maintenance",
               ].map((feature, i) => (
-                  <motion.div key={feature} custom={i} variants={fadeUp} whileHover={{ y: -3 }}>
+                  <motion.div key={feature} variants={fadeUp(i * 0.06)} whileHover={{ y: -3 }}>
                     <div className="p-6 rounded-lg border border-white/10 bg-white/50 backdrop-blur hover:border-primary/40 transition-colors">
                       <div className="text-lg font-semibold text-foreground">{feature}</div>
                     </div>
