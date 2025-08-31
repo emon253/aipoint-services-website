@@ -25,7 +25,7 @@ const Index = () => {
       <Navbar onContactClick={handleContactClick} />
       <Hero onContactClick={handleContactClick} />
       <About />
-      {/*<Services />*/}
+      <Services />
       {/*<Industries />*/}
       {/*<Portfolio />*/}
       {/*<Partners />*/}

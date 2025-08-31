@@ -1,15 +1,54 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Sparkles, LineChart, Laugh, ShieldCheck, Headphones } from "lucide-react";
+import { motion, useInView, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { useEffect, useRef } from "react";
 
 interface HeroProps {
   onContactClick: () => void;
+}
+
+/** Count-up when in view (integers) */
+function AnimatedNumber({ to, duration = 1.2 }: { to: number; duration?: number }) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const anchorRef = useRef<HTMLSpanElement>(null);
+  const inView = useInView(anchorRef, { once: true, margin: "0px 0px -20% 0px" });
+
+  const mv = useMotionValue(0);
+  const spring = useSpring(mv, { stiffness: 100, damping: 20, mass: 0.6 });
+  const rounded = useTransform(spring, (v) => Math.floor(v).toString());
+
+  useEffect(() => {
+    if (inView) {
+      // animate to target
+      const start = performance.now();
+      const tick = (t: number) => {
+        const p = Math.min(1, (t - start) / (duration * 1000));
+        mv.set(p * to);
+        if (p < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    }
+  }, [inView, to, duration, mv]);
+
+  useEffect(() => {
+    const unsub = rounded.on("change", (v) => {
+      if (ref.current) ref.current.textContent = Number(v).toLocaleString();
+    });
+    return () => unsub();
+  }, [rounded]);
+
+  return (
+      <>
+        <span ref={anchorRef} className="sr-only">counter anchor</span>
+        <span ref={ref}>0</span>
+      </>
+  );
 }
 
 const Hero = ({ onContactClick }: HeroProps) => {
   return (
       <section
           id="home"
-          // 100svh = better on mobile; scroll-mt for anchored nav; pt adjusts for fixed navbar height
           className="relative min-h-[calc(100svh)] scroll-mt-24 isolate overflow-hidden bg-[#08090B] pt-24 sm:pt-28 lg:pt-40"
       >
         {/* decorative gradient auras (muted on mobile for readability/perf) */}
@@ -60,46 +99,65 @@ const Hero = ({ onContactClick }: HeroProps) => {
               <Button
                   variant="outline"
                   size="lg"
-                  onClick={() =>
-                      document.getElementById("portfolio")?.scrollIntoView({ behavior: "smooth" })
-                  }
+                  onClick={() => document.getElementById("portfolio")?.scrollIntoView({ behavior: "smooth" })}
                   className="border-white/40 text-white bg-white/10 w-full sm:w-auto"
               >
                 View Our Work
               </Button>
             </div>
 
-            {/* Stats — tighter on mobile */}
+            {/* Stats with count-up */}
             <div className="mt-10 sm:mt-12 grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4">
-              {[
-                { n: "50+", l: "Projects", I: LineChart },
-                { n: "25+", l: "Happy Clients", I: Laugh },
-                { n: "100%", l: "Success Rate", I: ShieldCheck },
-                { n: "24/7", l: "Support", I: Headphones },
-              ].map(({ n, l, I }) => (
-                  <div
-                      key={l}
-                      className="group rounded-2xl border border-white/10 bg-white/5 px-3 py-4 sm:px-4 sm:py-5 text-center shadow-sm backdrop-blur transition hover:shadow-lg"
-                  >
-                    <I className="mx-auto mb-1.5 h-5 w-5 text-white/70" />
-                    <div className="text-xl sm:text-3xl font-bold text-white">{n}</div>
-                    <div className="text-[11px] sm:text-xs uppercase tracking-wide text-white/70">{l}</div>
-                  </div>
-              ))}
+              {/* Projects */}
+              <div className="group rounded-2xl border border-white/10 bg-white/5 px-3 py-4 sm:px-4 sm:py-5 text-center shadow-sm backdrop-blur transition hover:shadow-lg">
+                <LineChart className="mx-auto mb-1.5 h-5 w-5 text-white/70" />
+                <div className="text-xl sm:text-3xl font-bold text-white">
+                  <AnimatedNumber to={50} />
+                  <span>+</span>
+                </div>
+                <div className="text-[11px] sm:text-xs uppercase tracking-wide text-white/70">Projects</div>
+              </div>
+
+              {/* Happy Clients */}
+              <div className="group rounded-2xl border border-white/10 bg-white/5 px-3 py-4 sm:px-4 sm:py-5 text-center shadow-sm backdrop-blur transition hover:shadow-lg">
+                <Laugh className="mx-auto mb-1.5 h-5 w-5 text-white/70" />
+                <div className="text-xl sm:text-3xl font-bold text-white">
+                  <AnimatedNumber to={25} />
+                  <span>+</span>
+                </div>
+                <div className="text-[11px] sm:text-xs uppercase tracking-wide text-white/70">Happy Clients</div>
+              </div>
+
+              {/* Success Rate */}
+              <div className="group rounded-2xl border border-white/10 bg-white/5 px-3 py-4 sm:px-4 sm:py-5 text-center shadow-sm backdrop-blur transition hover:shadow-lg">
+                <ShieldCheck className="mx-auto mb-1.5 h-5 w-5 text-white/70" />
+                <div className="text-xl sm:text-3xl font-bold text-white">
+                  <AnimatedNumber to={100} />
+                  <span>%</span>
+                </div>
+                <div className="text-[11px] sm:text-xs uppercase tracking-wide text-white/70">Success Rate</div>
+              </div>
+
+              {/* Support */}
+              <div className="group rounded-2xl border border-white/10 bg-white/5 px-3 py-4 sm:px-4 sm:py-5 text-center shadow-sm backdrop-blur transition hover:shadow-lg">
+                <Headphones className="mx-auto mb-1.5 h-5 w-5 text-white/70" />
+                <div className="text-xl sm:text-3xl font-bold text-white">
+                  <AnimatedNumber to={24} />
+                  <span>/7</span>
+                </div>
+                <div className="text-[11px] sm:text-xs uppercase tracking-wide text-white/70">Support</div>
+              </div>
             </div>
           </div>
 
           {/* Right: visual — hidden on mobile as requested */}
           <div className="hidden lg:col-span-5 lg:block">
             <div className="relative mx-auto aspect-square w-4/5 max-w-[520px]">
-              {/* animated orb */}
               <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-indigo-400 via-violet-400 to-fuchsia-400 opacity-80 blur-2xl" />
               <div className="absolute inset-[6%] rounded-full border border-white/20 bg-black/40 backdrop-blur-md" />
-              {/* rotating ring */}
               <div className="absolute inset-[6%] rounded-full border border-white/10">
                 <div className="absolute left-1/2 top-0 h-2 w-2 -translate-x-1/2 rounded-full bg-white/80 motion-safe:animate-[spin_7s_linear_infinite]" />
               </div>
-              {/* dots */}
               <div className="absolute inset-[14%] rounded-full border border-dashed border-white/15 motion-safe:animate-[spin_20s_linear_infinite]" />
             </div>
           </div>
