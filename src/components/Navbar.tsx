@@ -20,13 +20,11 @@ const Navbar = ({ onContactClick }: NavbarProps) => {
     const onScroll = () => {
       setScrolled(window.scrollY > 6);
 
-      // determine active section
       let current = "home";
       for (const id of SECTIONS) {
         const el = document.getElementById(id);
         if (!el) continue;
         const rect = el.getBoundingClientRect();
-        // top reaches within 40% of viewport height
         if (rect.top <= window.innerHeight * 0.4) current = id;
       }
       setActive(current);
@@ -36,7 +34,7 @@ const Navbar = ({ onContactClick }: NavbarProps) => {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Close mobile on ESC and click outside
+  // Close mobile on ESC and click outside + lock scroll when open
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && setIsOpen(false);
     const onClick = (e: MouseEvent) => {
@@ -45,16 +43,23 @@ const Navbar = ({ onContactClick }: NavbarProps) => {
     };
     document.addEventListener("keydown", onKey);
     document.addEventListener("mousedown", onClick);
+
+    // body scroll lock (prevents page drifting under fixed header)
+    const { style } = document.body;
+    const prev = style.overflow;
+    style.overflow = isOpen ? "hidden" : prev || "";
+    if (!isOpen) style.overflow = prev;
+
     return () => {
       document.removeEventListener("keydown", onKey);
       document.removeEventListener("mousedown", onClick);
+      style.overflow = prev;
     };
   }, [isOpen]);
 
   const scrollTo = (hash: string) => {
     const el = document.querySelector(hash);
     if (!el) return;
-    // account for fixed navbar height
     const y = (el as HTMLElement).getBoundingClientRect().top + window.scrollY - 72;
     window.scrollTo({ top: y, behavior: "smooth" });
     setIsOpen(false);
@@ -63,9 +68,15 @@ const Navbar = ({ onContactClick }: NavbarProps) => {
   return (
       <nav
           className={clsx(
+              // full-bleed fixed bar with safe-area padding
               "fixed inset-x-0 top-0 z-50 transition-all duration-300",
+              "pt-[calc(env(safe-area-inset-top,0px))]",
               scrolled
-                  ? "bg-black/70 backdrop-blur-md border-b border-white/10 shadow-[0_1px_20px_rgba(0,0,0,0.25)]"
+                  ? [
+                    // Backdrop-aware background (better on iOS)
+                    "bg-black/70 supports-[backdrop-filter]:bg-black/50",
+                    "backdrop-blur-md border-b border-white/10 shadow-[0_1px_20px_rgba(0,0,0,0.25)]",
+                  ].join(" ")
                   : "bg-transparent"
           )}
           aria-label="Primary"
@@ -78,6 +89,7 @@ const Navbar = ({ onContactClick }: NavbarProps) => {
           Skip to content
         </a>
 
+        {/* Keep this container width in sync with your pages */}
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 items-center justify-between">
             {/* Brand */}
@@ -105,7 +117,6 @@ const Navbar = ({ onContactClick }: NavbarProps) => {
                       )}
                   >
                     {id[0].toUpperCase() + id.slice(1)}
-                    {/* active underline */}
                     <span
                         className={clsx(
                             "absolute left-0 -bottom-0.5 h-0.5 w-full scale-x-0 bg-gradient-to-r from-indigo-400 to-fuchsia-400 transition-transform origin-left",
@@ -126,15 +137,20 @@ const Navbar = ({ onContactClick }: NavbarProps) => {
               </Button>
             </div>
 
-            {/* Mobile toggle */}
+            {/* Mobile toggle — bigger hit area + contrast + safe-area right padding */}
             <button
                 onClick={() => setIsOpen((s) => !s)}
                 aria-expanded={isOpen}
                 aria-controls="mobile-menu"
                 aria-label="Toggle menu"
-                className="md:hidden inline-flex items-center justify-center p-2 text-white"
+                className={clsx(
+                    "md:hidden inline-flex items-center justify-center",
+                    "p-2 rounded-md ring-1 ring-white/15 bg-white/10 hover:bg-white/15",
+                    "text-white transition",
+                    "pr-[calc(0.5rem+env(safe-area-inset-right,0px))]"
+                )}
             >
-              {isOpen ? <X size={24} /> : <Menu size={24} />}
+              {isOpen ? <X size={22} /> : <Menu size={22} />}
             </button>
           </div>
 
@@ -147,7 +163,8 @@ const Navbar = ({ onContactClick }: NavbarProps) => {
                   isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
               )}
           >
-            <div className="mt-2 rounded-lg border border-white/10 bg-black/80 backdrop-blur-md p-2">
+            {/* edge-to-edge panel that still aligns with container padding */}
+            <div className="mt-2 rounded-lg border border-white/10 bg-black/80 supports-[backdrop-filter]:bg-black/60 backdrop-blur-md p-2 -mx-0 sm:-mx-0">
               {SECTIONS.map((id) => (
                   <button
                       key={id}
@@ -161,12 +178,18 @@ const Navbar = ({ onContactClick }: NavbarProps) => {
                     {id[0].toUpperCase() + id.slice(1)}
                   </button>
               ))}
-              <Button
-                  onClick={onContactClick}
-                  className="mt-2 w-full bg-white text-black hover:bg-gray-100 font-semibold"
-              >
-                Get Free Consultation
-              </Button>
+
+              <div className="mt-2 px-2">
+                {/*<Button*/}
+                {/*    onClick={() => {*/}
+                {/*      setIsOpen(false);*/}
+                {/*      onContactClick();*/}
+                {/*    }}*/}
+                {/*    className="w-full font-semibold shadow"*/}
+                {/*>*/}
+                {/*  Get Free Consultation*/}
+                {/*</Button>*/}
+              </div>
             </div>
           </div>
         </div>

@@ -55,7 +55,7 @@ const Services = () => {
   ];
 
   return (
-      <section id="services" className="pt-10 bg-background scroll-mt-24">
+      <section id="services" className="py-10 bg-background scroll-mt-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           {/* Header */}
           <motion.div

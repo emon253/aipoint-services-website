@@ -5,6 +5,7 @@
 /* AI Point Design System - Modern Corporate AI-inspired theme
 All colors MUST be HSL.
 */
+html, body { overflow-x: hidden; }
 
 @layer base {
   :root {

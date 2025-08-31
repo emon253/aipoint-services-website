@@ -146,7 +146,7 @@ const About = () => {
           </motion.div>
 
           {/* Overview + Achievements */}
-          <div className="grid lg:grid-cols-2 gap-12 items-center mb-20">
+          <div className="grid lg:grid-cols-2 gap-12 items-center mb-10">
             <motion.div
                 initial="hidden"
                 whileInView="show"
