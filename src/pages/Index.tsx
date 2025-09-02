@@ -27,7 +27,7 @@ const Index = () => {
       <About />
       <Services />
       <Industries />
-      {/*<Portfolio />*/}
+      <Portfolio />
       {/*<Partners />*/}
       <Footer />
       <ContactModal 

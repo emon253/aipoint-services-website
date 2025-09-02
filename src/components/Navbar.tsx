@@ -44,7 +44,6 @@ const Navbar = ({ onContactClick }: NavbarProps) => {
     document.addEventListener("keydown", onKey);
     document.addEventListener("mousedown", onClick);
 
-    // body scroll lock (prevents page drifting under fixed header)
     const { style } = document.body;
     const prev = style.overflow;
     style.overflow = isOpen ? "hidden" : prev || "";
@@ -68,15 +67,9 @@ const Navbar = ({ onContactClick }: NavbarProps) => {
   return (
       <nav
           className={clsx(
-              // full-bleed fixed bar with safe-area padding
-              "fixed inset-x-0 top-0 z-50 transition-all duration-300",
-              "pt-[calc(env(safe-area-inset-top,0px))]",
+              "fixed inset-x-0 top-0 z-50 transition-all duration-300 pt-[calc(env(safe-area-inset-top,0px))]",
               scrolled
-                  ? [
-                    // Backdrop-aware background (better on iOS)
-                    "bg-black/70 supports-[backdrop-filter]:bg-black/50",
-                    "backdrop-blur-md border-b border-white/10 shadow-[0_1px_20px_rgba(0,0,0,0.25)]",
-                  ].join(" ")
+                  ? "bg-black/70 supports-[backdrop-filter]:bg-black/55 backdrop-blur-md border-b border-white/10 shadow-[0_1px_20px_rgba(0,0,0,0.25)]"
                   : "bg-transparent"
           )}
           aria-label="Primary"
@@ -89,7 +82,7 @@ const Navbar = ({ onContactClick }: NavbarProps) => {
           Skip to content
         </a>
 
-        {/* Keep this container width in sync with your pages */}
+        {/* container */}
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 items-center justify-between">
             {/* Brand */}
@@ -98,7 +91,7 @@ const Navbar = ({ onContactClick }: NavbarProps) => {
                 className="group flex items-center gap-2"
                 aria-label="AI Point - go to home"
             >
-              <span className="h-6 w-6 rounded-md bg-gradient-to-br from-indigo-400 via-violet-400 to-fuchsia-400 blur-[0.2px] shadow-inner" />
+              <span className="h-6 w-6 rounded-md bg-gradient-to-br from-indigo-400 via-violet-400 to-fuchsia-400 shadow-inner" />
               <span className="text-xl font-bold tracking-tight text-white">
               AI <span className="text-white/70 group-hover:text-white transition-colors">Point</span>
             </span>
@@ -112,14 +105,14 @@ const Navbar = ({ onContactClick }: NavbarProps) => {
                       onClick={() => scrollTo(`#${id}`)}
                       className={clsx(
                           "relative px-1.5 py-2 text-sm font-medium transition-colors",
-                          "text-white/80 hover:text-white",
+                          "text-white/80 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-400/70 rounded",
                           active === id && "text-white"
                       )}
                   >
                     {id[0].toUpperCase() + id.slice(1)}
                     <span
                         className={clsx(
-                            "absolute left-0 -bottom-0.5 h-0.5 w-full scale-x-0 bg-gradient-to-r from-indigo-400 to-fuchsia-400 transition-transform origin-left",
+                            "absolute left-0 -bottom-0.5 h-0.5 w-full scale-x-0 bg-gradient-to-r from-indigo-400 via-violet-400 to-fuchsia-400 transition-transform origin-left",
                             active === id && "scale-x-100"
                         )}
                     />
@@ -131,13 +124,15 @@ const Navbar = ({ onContactClick }: NavbarProps) => {
             <div className="hidden md:block">
               <Button
                   onClick={onContactClick}
-                  className="font-semibold shadow-lg hover:shadow-xl transition-all bg-white text-black hover:bg-gray-100"
+                  className="font-semibold shadow-lg hover:shadow-xl transition-all
+                         bg-gradient-to-r from-indigo-500 via-violet-500 to-fuchsia-500 text-white
+                         hover:from-indigo-400 hover:to-fuchsia-400 focus-visible:ring-violet-400"
               >
                 Get Free Consultation
               </Button>
             </div>
 
-            {/* Mobile toggle — bigger hit area + contrast + safe-area right padding */}
+            {/* Mobile toggle */}
             <button
                 onClick={() => setIsOpen((s) => !s)}
                 aria-expanded={isOpen}
@@ -163,15 +158,14 @@ const Navbar = ({ onContactClick }: NavbarProps) => {
                   isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
               )}
           >
-            {/* edge-to-edge panel that still aligns with container padding */}
-            <div className="mt-2 rounded-lg border border-white/10 bg-black/80 supports-[backdrop-filter]:bg-black/60 backdrop-blur-md p-2 -mx-0 sm:-mx-0">
+            <div className="mt-2 rounded-lg border border-white/10 bg-black/80 supports-[backdrop-filter]:bg-black/60 backdrop-blur-md p-2">
               {SECTIONS.map((id) => (
                   <button
                       key={id}
                       onClick={() => scrollTo(`#${id}`)}
                       className={clsx(
                           "w-full rounded-md px-3 py-2 text-left text-base font-medium transition",
-                          "text-white/90 hover:bg-white/10",
+                          "text-white/90 hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-400/70",
                           active === id && "text-white"
                       )}
                   >
@@ -179,17 +173,6 @@ const Navbar = ({ onContactClick }: NavbarProps) => {
                   </button>
               ))}
 
-              <div className="mt-2 px-2">
-                {/*<Button*/}
-                {/*    onClick={() => {*/}
-                {/*      setIsOpen(false);*/}
-                {/*      onContactClick();*/}
-                {/*    }}*/}
-                {/*    className="w-full font-semibold shadow"*/}
-                {/*>*/}
-                {/*  Get Free Consultation*/}
-                {/*</Button>*/}
-              </div>
             </div>
           </div>
         </div>

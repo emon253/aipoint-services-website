@@ -4,19 +4,7 @@ import { Button } from '@/components/ui/button';
 
 const Portfolio = () => {
   const projects = [
-    {
-      title: 'FinTech Trading Platform',
-      category: 'Finance',
-      description: 'AI-powered trading platform with real-time analytics and automated portfolio management',
-      technologies: ['React', 'Node.js', 'Python', 'TensorFlow', 'MongoDB'],
-      stats: [
-        { label: 'Active Users', value: '10K+' },
-        { label: 'Transactions/Day', value: '50K+' },
-        { label: 'Success Rate', value: '99.9%' }
-      ],
-      image: 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=600&h=400&fit=crop&auto=format',
-      featured: true
-    },
+
     {
       title: 'Healthcare Management System',
       category: 'Healthcare',
@@ -27,7 +15,7 @@ const Portfolio = () => {
         { label: 'Hospitals', value: '15' },
         { label: 'Accuracy Rate', value: '98%' }
       ],
-      image: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?w=600&h=400&fit=crop&auto=format',
+      image: 'https://images.pexels.com/photos/40568/medical-appointment-doctor-healthcare-40568.jpeg',
       featured: true
     },
     {
@@ -66,7 +54,7 @@ const Portfolio = () => {
         { label: 'Fleet Size', value: '3K+' },
         { label: 'Cost Savings', value: '25%' }
       ],
-      image: 'https://images.unsplash.com/photo-1581091870622-8e07eca6f7d7?crop=entropy&w=600&h=400&fit=crop&auto=format',
+      image: 'https://images.pexels.com/photos/1427541/pexels-photo-1427541.jpeg',
       featured: false
     },
     {
@@ -79,8 +67,8 @@ const Portfolio = () => {
         { label: 'Markets Covered', value: '12' },
         { label: 'Prediction Accuracy', value: '92%' }
       ],
-      image: 'https://images.unsplash.com/photo-YWRGlZ1LQQ8?crop=entropy&w=600&h=400&fit=crop&auto=format',
-      featured: false
+      image: 'https://images.pexels.com/photos/313691/pexels-photo-313691.jpeg',
+      featured: true
     }
 
 
@@ -167,16 +155,16 @@ const Portfolio = () => {
                   </div>
                   
                   {/* Actions */}
-                  <div className="flex gap-4">
-                    <Button variant="outline" size="sm">
-                      <Github className="w-4 h-4 mr-2" />
-                      View Code
-                    </Button>
-                    <Button size="sm">
-                      <ExternalLink className="w-4 h-4 mr-2" />
-                      Live Demo
-                    </Button>
-                  </div>
+                  {/*<div className="flex gap-4">*/}
+                  {/*  <Button variant="outline" size="sm">*/}
+                  {/*    <Github className="w-4 h-4 mr-2" />*/}
+                  {/*    View Code*/}
+                  {/*  </Button>*/}
+                  {/*  <Button size="sm">*/}
+                  {/*    <ExternalLink className="w-4 h-4 mr-2" />*/}
+                  {/*    Live Demo*/}
+                  {/*  </Button>*/}
+                  {/*</div>*/}
                 </CardContent>
               </div>
             </Card>

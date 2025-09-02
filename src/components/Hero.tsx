@@ -49,7 +49,7 @@ const Hero = ({ onContactClick }: HeroProps) => {
   return (
       <section
           id="home"
-          className="relative min-h-[calc(100svh)] scroll-mt-24 isolate overflow-hidden bg-[#08090B] pt-24 sm:pt-28 lg:pt-40"
+          className="relative min-h-[calc(50svh)] scroll-mt-24 isolate overflow-hidden bg-[#08090B] py-24 sm:pt-28 lg:pt-40"
       >
         {/* decorative gradient auras (muted on mobile for readability/perf) */}
         <div
@@ -69,8 +69,9 @@ const Hero = ({ onContactClick }: HeroProps) => {
           {/* Left: copy */}
           <div className="lg:col-span-7 text-center lg:text-left">
             {/* Badge */}
-            <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-xs sm:text-sm text-white/90 backdrop-blur">
-              <Sparkles className="h-4 w-4" />
+            <div
+                className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-xs sm:text-sm text-white/90 backdrop-blur">
+              <Sparkles className="h-4 w-4"/>
               AI-Powered Solutions
             </div>
 
@@ -87,19 +88,20 @@ const Hero = ({ onContactClick }: HeroProps) => {
             </p>
 
             {/* CTAs */}
-            <div className="mt-6 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:justify-center lg:justify-start">
+            <div
+                className="mt-6 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:justify-center lg:justify-start">
               <Button
                   onClick={onContactClick}
                   size="lg"
                   className="group bg-white text-black hover:bg-gray-100 font-semibold shadow-lg hover:shadow-xl w-full sm:w-auto"
               >
                 Get Free Consultation
-                <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
+                <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1"/>
               </Button>
               <Button
                   variant="outline"
                   size="lg"
-                  onClick={() => document.getElementById("portfolio")?.scrollIntoView({ behavior: "smooth" })}
+                  onClick={() => document.getElementById("portfolio")?.scrollIntoView({behavior: "smooth"})}
                   className="border-white/40 text-white bg-white/10 w-full sm:w-auto"
               >
                 View Our Work
@@ -108,59 +110,62 @@ const Hero = ({ onContactClick }: HeroProps) => {
 
             {/* Stats with count-up */}
             <div className="mt-10 sm:mt-12 grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4">
-              {/* Projects */}
-              <div className="group rounded-2xl border border-white/10 bg-white/5 px-3 py-4 sm:px-4 sm:py-5 text-center shadow-sm backdrop-blur transition hover:shadow-lg">
-                <LineChart className="mx-auto mb-1.5 h-5 w-5 text-white/70" />
-                <div className="text-xl sm:text-3xl font-bold text-white">
-                  <AnimatedNumber to={50} />
-                  <span>+</span>
-                </div>
-                <div className="text-[11px] sm:text-xs uppercase tracking-wide text-white/70">Projects</div>
-              </div>
-
-              {/* Happy Clients */}
-              <div className="group rounded-2xl border border-white/10 bg-white/5 px-3 py-4 sm:px-4 sm:py-5 text-center shadow-sm backdrop-blur transition hover:shadow-lg">
-                <Laugh className="mx-auto mb-1.5 h-5 w-5 text-white/70" />
-                <div className="text-xl sm:text-3xl font-bold text-white">
-                  <AnimatedNumber to={25} />
-                  <span>+</span>
-                </div>
-                <div className="text-[11px] sm:text-xs uppercase tracking-wide text-white/70">Happy Clients</div>
-              </div>
-
-              {/* Success Rate */}
-              <div className="group rounded-2xl border border-white/10 bg-white/5 px-3 py-4 sm:px-4 sm:py-5 text-center shadow-sm backdrop-blur transition hover:shadow-lg">
-                <ShieldCheck className="mx-auto mb-1.5 h-5 w-5 text-white/70" />
-                <div className="text-xl sm:text-3xl font-bold text-white">
-                  <AnimatedNumber to={100} />
-                  <span>%</span>
-                </div>
-                <div className="text-[11px] sm:text-xs uppercase tracking-wide text-white/70">Success Rate</div>
-              </div>
-
-              {/* Support */}
-              <div className="group rounded-2xl border border-white/10 bg-white/5 px-3 py-4 sm:px-4 sm:py-5 text-center shadow-sm backdrop-blur transition hover:shadow-lg">
-                <Headphones className="mx-auto mb-1.5 h-5 w-5 text-white/70" />
-                <div className="text-xl sm:text-3xl font-bold text-white">
-                  <AnimatedNumber to={24} />
-                  <span>/7</span>
-                </div>
-                <div className="text-[11px] sm:text-xs uppercase tracking-wide text-white/70">Support</div>
-              </div>
+              {[
+                {Icon: LineChart, value: 50, suffix: "+", label: "Projects"},
+                {Icon: Laugh, value: 25, suffix: "+", label: "Happy Clients"},
+                {Icon: ShieldCheck, value: 100, suffix: "%", label: "Success Rate"},
+                {Icon: Headphones, value: 24, suffix: "/7", label: "Support"},
+              ].map(({Icon, value, suffix, label}) => (
+                  <div key={label}
+                       className="rounded-2xl p-[1px] bg-gradient-to-br from-white/20 via-white/5 to-white/10">
+                    <div
+                        className="group rounded-2xl bg-white/5 px-3 py-4 sm:px-4 sm:py-5 text-center shadow-sm backdrop-blur-lg transition hover:shadow-lg">
+                      <Icon className="mx-auto mb-1.5 h-5 w-5 text-white/75"/>
+                      <div className="text-xl sm:text-3xl font-bold text-white">
+                        <AnimatedNumber to={value}/>
+                        <span>{suffix}</span>
+                      </div>
+                      <div className="text-[11px] sm:text-xs uppercase tracking-wide text-white/70">{label}</div>
+                    </div>
+                  </div>
+              ))}
             </div>
+
+            <div
+                aria-hidden
+                className="absolute inset-x-0 bottom-0 h-16 pointer-events-none"
+                style={{
+                  backgroundImage: `
+      linear-gradient(
+        to bottom,
+        rgba(0,0,0,0.35) 0%,   /* soft black at the top */
+        rgba(0,0,0,0.15) 20%,  /* gently reducing shadow */
+        rgba(0,0,0,0.05) 40%,  /* almost gone */
+        rgba(251,251,251,0.7) 75%, /* light tint for smooth handoff */
+        rgba(251,251,251,1) 100%   /* pure off-white bottom */
+      )
+    `,
+                }}
+            />
+
+
           </div>
 
           {/* Right: visual — hidden on mobile as requested */}
           <div className="hidden lg:col-span-5 lg:block">
             <div className="relative mx-auto aspect-square w-4/5 max-w-[520px]">
-              <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-indigo-400 via-violet-400 to-fuchsia-400 opacity-80 blur-2xl" />
-              <div className="absolute inset-[6%] rounded-full border border-white/20 bg-black/40 backdrop-blur-md" />
+              <div
+                  className="absolute inset-0 rounded-full bg-gradient-to-tr from-indigo-400 via-violet-400 to-fuchsia-400 opacity-80 blur-2xl"/>
+              <div className="absolute inset-[6%] rounded-full border border-white/20 bg-black/40 backdrop-blur-md"/>
               <div className="absolute inset-[6%] rounded-full border border-white/10">
-                <div className="absolute left-1/2 top-0 h-2 w-2 -translate-x-1/2 rounded-full bg-white/80 motion-safe:animate-[spin_7s_linear_infinite]" />
+                <div
+                    className="absolute left-1/2 top-0 h-2 w-2 -translate-x-1/2 rounded-full bg-white/80 motion-safe:animate-[spin_7s_linear_infinite]"/>
               </div>
-              <div className="absolute inset-[14%] rounded-full border border-dashed border-white/15 motion-safe:animate-[spin_20s_linear_infinite]" />
+              <div
+                  className="absolute inset-[14%] rounded-full border border-dashed border-white/15 motion-safe:animate-[spin_20s_linear_infinite]"/>
             </div>
           </div>
+
         </div>
       </section>
   );
